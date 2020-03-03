@@ -1,0 +1,1 @@
+maxID 3 vertex 0.0 -50.0 Positive 0 vertex -120.0 -50.0 Negative 1 vertex 120.0 -50.0 Negative 2 connection 1 0 connection 0 2 

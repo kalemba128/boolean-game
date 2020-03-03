@@ -1,0 +1,1 @@
+maxID 5 vertex 0.0 -50.0 Positive 0 vertex 0.0 130.0 Negative 1 vertex -180.0 -50.0 Positive 2 vertex 180.0 -50.0 Positive 3 vertex 0.0 -230.0 Positive 4 connection 1 2 connection 2 0 connection 0 3 connection 3 1 connection 0 4 

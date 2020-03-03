@@ -1,0 +1,1 @@
+maxID 19 vertex -180.0 70.0 Negative 3 vertex 180.0 70.0 Negative 4 vertex 0.0 -230.0 Positive 6 vertex -180.0 -110.0 Negative 8 vertex 180.0 -110.0 Positive 9 vertex 0.0 190.0 Negative 10 connection 10 3 connection 10 4 connection 4 9 connection 9 6 connection 6 8 connection 8 3 connection 3 9 connection 10 6 connection 4 8 
