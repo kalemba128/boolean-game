@@ -1,7 +1,5 @@
 package com.bartoszkalemba.booleangame.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.bartoszkalemba.booleangame.BooleanGame;

@@ -1,7 +1,6 @@
 package com.bartoszkalemba.booleangame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -52,8 +51,6 @@ public class GameplayScreen extends AbstractScreen {
 	}
 
 	private void loadLevel() {
-
-
 		String levelPath = "";
 
 		if (currentLevel > 0){ // normal
@@ -66,12 +63,9 @@ public class GameplayScreen extends AbstractScreen {
 			levelPath = "levels/creative/level" + (currentLevel * -1);
 		}
 
-
-
 		if (currentLevel == 0){
-			// random
+			//  random .... it will be soon
 		}
-
 
 		gameManager = new GameManager();
 		gameManager.getLevel().load(levelPath);
@@ -151,21 +145,6 @@ public class GameplayScreen extends AbstractScreen {
 			if (resetButton.isClick())
 				game.setScreen(new GameplayScreen(game, currentLevel));
 		}
-
-
-		/*
-		if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-
-			if (currentLevel > -40)
-			game.setScreen(new GameplayScreen(game, currentLevel - 1));
-		}
-
-		if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-
-			if (currentLevel < 40)
-				game.setScreen(new GameplayScreen(game, currentLevel + 1));
-		}*/
-
 	}
 
 

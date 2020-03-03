@@ -8,11 +8,8 @@ import com.bartoszkalemba.booleangame.screens.SplashScreen;
 
 public class BooleanGame extends Game {
 
-	// ---- PUBLIC STATIC ---- //
-	public final static String GAME_NAME = "boolean";
-	public static Vector2 RESOLUTION = new Vector2(720, 1280); // docelowna rozdzielczosc
-
-	// WYMIARY WINDOWSOWEGO OKNA - ROZDZIELCZOSC TESTOWA NIE ZMIENIAC OD NIEJ ZALEZY SKALA
+	/* SIZES OF WINDOW TO TESTING APP ON DESKTOP */
+	public static Vector2 RESOLUTION = new Vector2(720, 1280); // target resolution
 	public final static int WINDOW_WIDTH = 360;
 	public final static int WINDOW_HEIGHT = (WINDOW_WIDTH * (int)RESOLUTION.y) / (int)RESOLUTION.x;
 
@@ -20,14 +17,14 @@ public class BooleanGame extends Game {
 	public final static String GAME_LEVELS = "com.bartoszkalemba.boolean.prefs.levels";
 	public final static String GAME_LEVELS_CREATIVE = "com.bartoszkalemba.boolean.prefs.creative";
 	public final static String GAME_SOUND = "com.bartoszkalemba.boolean.prefs.sound";
-	public final static String GAME_COLORS = "com.bartoszkalemba.boolean.prefs.colors";
+	public final static String GAME_COLORS = "com.bartoszkalemba.boolean.prefs.appearance";
 
 	// ---- PRIVATE ---- //
 	private boolean paused;
 	private static boolean sound = true;
 	private Preferences prefs;
 	private Assets assets;
-	private Colors colors = new Colors();
+	private Appearance appearance = new Appearance();
 
 	@Override
 	public void create () {
@@ -47,15 +44,15 @@ public class BooleanGame extends Game {
 		else setSound(prefs.getBoolean(GAME_SOUND));
 
 		int colorSet = prefs.getInteger(GAME_COLORS);
-		setColors(colorSet);
+		setAppearance(colorSet);
 
 		this.setScreen(new SplashScreen(this));
 	}
 
-	public void setColors(int set){
-		Constant.BackgroundColor = colors.getBackground(set);
-		Constant.MainColor = colors.getMain(set);
-		Constant.LockColor = colors.getLock(set);
+	public void setAppearance(int set){
+		Constant.BackgroundColor = appearance.getBackground(set);
+		Constant.MainColor = appearance.getMain(set);
+		Constant.LockColor = appearance.getLock(set);
 
 		prefs.putInteger(GAME_COLORS, set);
 		prefs.flush();

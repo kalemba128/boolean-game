@@ -6,7 +6,13 @@ import com.badlogic.gdx.graphics.Color;
  * Created by Bartek on 01.08.2017.
  */
 
-public class Colors {
+public class Appearance {
+
+    public static int CIRCLE_SEGMENTS = 100;
+    public static Color BACKGROUND_COLOR = Color(234, 240, 241);
+    public static Color MAIN_COLOR = Color(44, 62, 80);
+    public static Color LOCK_COLOR = Color(127, 140, 141);
+
 
     private class Set{
         public Color main;
@@ -19,7 +25,7 @@ public class Colors {
 
     public Set[] sets = new Set[16];
 
-    public Colors(){
+    public Appearance(){
 
         for (int i = 0; i < 16; i++)
             sets[i] = new Set();
@@ -49,7 +55,7 @@ public class Colors {
         sets[id].lock = new Color(main.r, main.g, main.b, 0.5f);
     }
 
-    public Color Color(int r, int g, int b) {
+    public static Color Color(int r, int g, int b) {
         return  new Color(r/255.f, g/255.f, b/255.f, 1.f);
     }
 

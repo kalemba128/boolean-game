@@ -92,7 +92,7 @@ public class OptionsScreen extends AbstractScreen{
 			b.update(mouse());
 
 			if (b.isClick()) {
-				game.setColors(colorSet);
+				game.setAppearance(colorSet);
 				game.setScreen(new OptionsScreen(game));
 			}
 

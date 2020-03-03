@@ -1,9 +1,7 @@
 package com.bartoszkalemba.booleangame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -47,7 +45,6 @@ public abstract class AbstractScreen implements Screen{
 		return new Vector2(camera.viewportWidth,  camera.viewportHeight);
 	}
 
-	// przelica wspolrzedne z gimp na te z libgdx ( znaczy moje )
 	Vector2 calc(float x, float y) {
 		Vector2 half = new Vector2(getResolution().x/2, getResolution().y/2);
 
@@ -68,29 +65,12 @@ public abstract class AbstractScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-
-		if (Gdx.input.isKeyJustPressed(Input.Keys.N))
-		{
-			Color mc = Constant.MainColor;
-			Constant.MainColor = Constant.BackgroundColor;
-			Constant.BackgroundColor = mc;
-		}
-
-		/// AKTUALIZACJA ///
 		update(delta);
-
-
-		/// RENDEROWANIE ///
 		clearScreen(); // czyszczenie ekranu
-
 		camera.update();
-
 		spriteBatch.setProjectionMatrix(camera.combined); // ustawianie projekci spriteBatchu
 		shapeRenderer.setProjectionMatrix(camera.combined); // ustawianie projekci shaperenderu
 	}
-
-
-
 
 	private void clearScreen() {
 		Gdx.gl.glClearColor(Constant.BackgroundColor.r,
@@ -98,7 +78,6 @@ public abstract class AbstractScreen implements Screen{
 				Constant.BackgroundColor.b,
 				Constant.BackgroundColor.a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 	}
 
 	@Override

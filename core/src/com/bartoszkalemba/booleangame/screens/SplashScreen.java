@@ -2,6 +2,7 @@ package com.bartoszkalemba.booleangame.screens;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.bartoszkalemba.booleangame.Appearance;
 import com.bartoszkalemba.booleangame.BooleanGame;
 import com.bartoszkalemba.booleangame.Constant;
 
@@ -30,7 +31,7 @@ public class SplashScreen extends AbstractScreen{
 		int w = (int)logoSprite.getWidth();
 		int h = (int)logoSprite.getHeight() - 90;
 		logoSprite.setPosition(-w/2, (-h/2));
-		logoSprite.setColor(Constant.MainColor);
+		logoSprite.setColor(Appearance.MAIN_COLOR);
 	}
 
 	private void loadResources() {
@@ -52,14 +53,15 @@ public class SplashScreen extends AbstractScreen{
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		drawLoadBar(game.getAssets().manager.getProgress());
+		
+		drawLoadingBar(game.getAssets().manager.getProgress());
 
 		spriteBatch.begin();
 		logoSprite.draw(spriteBatch);
 		spriteBatch.end();
 	}
 
-	private void drawLoadBar(float progress) {
+	private void drawLoadingBar(float progress) {
 
 		float w = logoSprite.getWidth();
 		float h = 70;
@@ -68,15 +70,15 @@ public class SplashScreen extends AbstractScreen{
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-		shapeRenderer.setColor(Constant.MainColor);
+		shapeRenderer.setColor(Appearance.MAIN_COLOR);
 		shapeRenderer.rect(x, y, w, h); // back
 
-		shapeRenderer.setColor(Constant.BackgroundColor);
+		shapeRenderer.setColor(Appearance.BACKGROUND_COLOR);
 		shapeRenderer.rect(x + 10, y + 10, w - 20, h - 20); //
 
 
 		float progressScale = (w - 20) / 100;
-		shapeRenderer.setColor(Constant.MainColor);
+		shapeRenderer.setColor(Appearance.MAIN_COLOR);
 		shapeRenderer.rect(x + 10, y + 10, progress * progressScale * 100, h - 20); //
 
 		shapeRenderer.end();
