@@ -7,3 +7,5 @@ Boolean is a simple, puzzle game for Android. It is made with java and LibGDX fr
 ![screen3](https://github.com/kalemba128/boolean-game/blob/master/screenshots/s3.png?raw=true)
 ![screen4](https://github.com/kalemba128/boolean-game/blob/master/screenshots/s4.png?raw=true)
 
+You can download and test it from Google Play [here](https://play.google.com/store/apps/details?id=nullowls.boolean&hl=en).
+
