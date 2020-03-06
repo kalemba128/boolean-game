@@ -8,26 +8,23 @@ import com.bartoszkalemba.booleangame.screens.SplashScreen;
 
 public class BooleanGame extends Game {
 
-	// ---- PUBLIC STATIC ---- //
-	public final static String GAME_NAME = "boolean";
-	public static Vector2 RESOLUTION = new Vector2(720, 1280); // docelowna rozdzielczosc
-
-	// WYMIARY WINDOWSOWEGO OKNA - ROZDZIELCZOSC TESTOWA NIE ZMIENIAC OD NIEJ ZALEZY SKALA
+	/* SIZES OF WINDOW TO TESTING APP ON DESKTOP */
+	public static Vector2 RESOLUTION = new Vector2(720, 1280); // target resolution
 	public final static int WINDOW_WIDTH = 360;
 	public final static int WINDOW_HEIGHT = (WINDOW_WIDTH * (int)RESOLUTION.y) / (int)RESOLUTION.x;
 
 	public final static String GAME_PREFS = "com.bartoszkalemba.boolean.prefs";
-	public final static String GAME_LEVELS = "com.bartoszkalemba.boolean.prefs.levels";
+	public final static String GAME_LEVELS_NORMAL = "com.bartoszkalemba.boolean.prefs.levels";
 	public final static String GAME_LEVELS_CREATIVE = "com.bartoszkalemba.boolean.prefs.creative";
 	public final static String GAME_SOUND = "com.bartoszkalemba.boolean.prefs.sound";
-	public final static String GAME_COLORS = "com.bartoszkalemba.boolean.prefs.colors";
+	public final static String GAME_APPEARANCE = "com.bartoszkalemba.boolean.prefs.appearance";
 
 	// ---- PRIVATE ---- //
 	private boolean paused;
 	private static boolean sound = true;
 	private Preferences prefs;
 	private Assets assets;
-	private Colors colors = new Colors();
+	private Appearance appearance = new Appearance();
 
 	@Override
 	public void create () {
@@ -39,40 +36,43 @@ public class BooleanGame extends Game {
 
 	private void init() {
 		assets = new Assets();
-
 		prefs =  Gdx.app.getPreferences(GAME_PREFS);
 
-		if (!prefs.contains(GAME_SOUND))
-			setSound(sound);
-		else setSound(prefs.getBoolean(GAME_SOUND));
-
-		int colorSet = prefs.getInteger(GAME_COLORS);
-		setColors(colorSet);
+		getSoundSettings();
+		getAppearanceSettings();
 
 		this.setScreen(new SplashScreen(this));
 	}
 
-	public void setColors(int set){
-		Constant.BackgroundColor = colors.getBackground(set);
-		Constant.MainColor = colors.getMain(set);
-		Constant.LockColor = colors.getLock(set);
+	/// --- APPEARANCE --- ///
+	public void getAppearanceSettings(){
+		int set = prefs.getInteger(GAME_APPEARANCE);
+		Appearance.MAIN_COLOR = appearance.getMainColor(set);
+		Appearance.BACKGROUND_COLOR = appearance.getBackgroundColor(set);
+		Appearance.LOCK_COLOR = appearance.getLockColor(set);
+	}
 
-		prefs.putInteger(GAME_COLORS, set);
+	public void setAppearanceSettings(int colorSet){
+		Appearance.MAIN_COLOR = appearance.getMainColor(colorSet);
+		Appearance.BACKGROUND_COLOR = appearance.getBackgroundColor(colorSet);
+		Appearance.LOCK_COLOR = appearance.getLockColor(colorSet);
+		prefs.putInteger(GAME_APPEARANCE, colorSet);
 		prefs.flush();
 	}
 
 
-	public void unlockLevel(int level) {
+	/// --- LEVELS --- ///
+	public void unlockNextNormalLevel(int level) {
 
-		int currentLevel = prefs.getInteger(GAME_LEVELS);
+		int currentLevel = prefs.getInteger(GAME_LEVELS_NORMAL);
 
 		if (currentLevel < level) {
-			prefs.putInteger(GAME_LEVELS, level);
+			prefs.putInteger(GAME_LEVELS_NORMAL, level);
 			prefs.flush();
 		}
 	}
 
-	public void unlockLevelCreative(int level) {
+	public void unlockNextCreativeLevel(int level) {
 
 		int currentLevel = prefs.getInteger(GAME_LEVELS_CREATIVE);
 
@@ -82,10 +82,10 @@ public class BooleanGame extends Game {
 		}
 	}
 
-	public int getUnlockLevel() {
-		return prefs.getInteger(GAME_LEVELS);
+	public int getCurrentNormalLevel() {
+		return prefs.getInteger(GAME_LEVELS_NORMAL);
 	}
-	public int getUnlockLevelCreative() {
+	public int getCurrentCreativeLevel() {
 		return prefs.getInteger(GAME_LEVELS_CREATIVE);
 	}
 
@@ -98,11 +98,18 @@ public class BooleanGame extends Game {
 	public boolean isPaused() {return paused;}
 	public void setPaused(boolean paused) {this.paused = paused;}
 
-	public void setSound(boolean sound) {
+
+	/// --- SOUND --- ///
+	private void getSoundSettings(){
+		if (!prefs.contains(GAME_SOUND))
+			setSoundSettings(sound);
+		else setSoundSettings(prefs.getBoolean(GAME_SOUND));
+	}
+
+	public void setSoundSettings(boolean sound) {
 		this.sound = sound;
 		prefs.putBoolean(GAME_SOUND, sound);
 		prefs.flush();
-
 	}
 
 	public static boolean isSound() {

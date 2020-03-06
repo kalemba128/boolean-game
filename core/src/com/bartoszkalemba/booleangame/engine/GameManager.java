@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.bartoszkalemba.booleangame.Appearance;
 import com.bartoszkalemba.booleangame.BooleanGame;
-import com.bartoszkalemba.booleangame.Constant;
 
 public class GameManager {
 
@@ -17,7 +17,7 @@ public class GameManager {
     private SpriteBatch spriteBatch;
 
 
-    // Funkcja zmienia stan danego wierzcholka oraz strzela pociskami w sasiadow
+    // Change the state of vertex and shoot to neighbors
     public void hitVertex(Vertex v) {
         for (Vertex it : level.vertexConnections(v))
             bulletsManager.addBullet(v, it);
@@ -44,12 +44,8 @@ public class GameManager {
                 if (v.isClick(mouse)) {
                     hitVertex(v);
                     level.counterSteps++;
-                    //Sound sound = game.getAssets().get("sounds/click-vertex.mp3", Sound.class);
-                    //sound.play();
                 }
             }
-
-
     }
 
     public void render() {
@@ -59,7 +55,7 @@ public class GameManager {
         /////////////////////////////////////////////
         // DRAW BACK
 
-        shapeRenderer.setColor(Constant.MainColor);
+        shapeRenderer.setColor(Appearance.MAIN_COLOR);
 
         // Vertices
         for (Vertex v : level.vertices)
@@ -77,7 +73,7 @@ public class GameManager {
         // DRAW FRONT
 
         // Connections
-        shapeRenderer.setColor(Constant.BackgroundColor);
+        shapeRenderer.setColor(Appearance.BACKGROUND_COLOR);
         for (Connection c : level.connections)
             c.drawFront(shapeRenderer);
 

@@ -16,7 +16,7 @@ public class Bullet {
     public Vertex target;
 
     public Bullet(Vertex source, Vertex target) {
-        // oblicz kat
+        // Calculating angle
         float angle = MathUtils.atan2(target.position.y - source.position.y, target.position.x - source.position.x);
 
         this.position = new Vector2(source.position.x, source.position.y);
@@ -25,13 +25,13 @@ public class Bullet {
     }
 
     public void update(float delta) {
-        // aktualizuj pozycje pociskow
+        // Updating position of bullet
         position.x += (velocity.x * Speed) * delta;
         position.y += (velocity.y * Speed) * delta;
     }
 
     public boolean hit() {
-        // oblicz czy pocisk i kuleczka sie ze soba nie zderzyly
+        /* Checking collision between objects */
         float a = position.x - target.position.x;
         float b = position.y - target.position.y;
         float c = (float)Math.sqrt(a*a + b*b);

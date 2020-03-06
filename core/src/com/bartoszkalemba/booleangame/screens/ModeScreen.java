@@ -1,24 +1,19 @@
 package com.bartoszkalemba.booleangame.screens;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.bartoszkalemba.booleangame.BooleanGame;
-import com.bartoszkalemba.booleangame.Constant;
-import com.bartoszkalemba.booleangame.GUI.Button;
-import com.bartoszkalemba.booleangame.GUI.RectButton;
+import com.bartoszkalemba.booleangame.Appearance;
+import com.bartoszkalemba.booleangame.BooleanGame;;
+import com.bartoszkalemba.booleangame.GUI.Buttons;
 
 
 public class ModeScreen extends AbstractScreen{
 
+	private Buttons buttons;
+	private Sprite topSprite;
+	private Label titleLabel;
 
-	Sprite topSprite;
-	Button backButton;
-	Label titleLabel;
-
-	RectButton normalButton, creativeButton, randomButton;
 
 	public ModeScreen(final BooleanGame game) {
 		super(game);
@@ -27,60 +22,21 @@ public class ModeScreen extends AbstractScreen{
 	@Override
 	protected void init() {
 
+		buttons = new Buttons();
 		createInterface();
 	}
 
-	private void createInterface() {
-		createTopbar();
-		createTitle();
-
-		backButton = new Button(40, calc(20 + 40, 10 + 40), assets.getSprite("back-button.png"));
-		backButton.sprite.setColor(Constant.BackgroundColor);
-
-		normalButton = new RectButton(new Vector2(548, 154), calc(86, 505), assets.getSprite("button-mode-normal.png"));
-		normalButton.sprite.setColor(Constant.MainColor);
-
-		creativeButton = new RectButton(new Vector2(548, 154), calc(86, 717), assets.getSprite("button-mode-creative.png"));
-		creativeButton.sprite.setColor(Constant.MainColor);
-
-		randomButton = new RectButton(new Vector2(548, 154), calc(86, 931), assets.getSprite("button-mode-random.png"));
-		randomButton.sprite.setColor(Constant.LockColor);
-
-	}
-
-
-	private void createTitle() {
-		Label.LabelStyle labelStyle = new Label.LabelStyle(assets.getFont("default48.fnt"), Constant.BackgroundColor);
-		titleLabel = new Label("select mode", labelStyle);
-
-		float w = titleLabel.getWidth();
-		float h = titleLabel.getHeight();
-
-		Vector2 pos = calc(getResolution().x / 2 - w/2, 50 + h/2 );
-		titleLabel.setPosition(pos.x, pos.y);
-	}
-	private void createTopbar() {
-		topSprite = assets.getSprite("topbar.png");
-		Vector2 pos = calc(0, 100);
-		topSprite.setPosition(pos.x, pos.y);
-		topSprite.setColor(Constant.MainColor);
-	}
-
-
 	@Override
 	protected void update(float delta) {
-		backButton.update(mouse());
-		normalButton.update(mouse());
-		randomButton.update(mouse());
-		creativeButton.update(mouse());
+		buttons.update();
 
-		if (normalButton.isClick())
-			game.setScreen(new LevelsScreen(game));
+		if (buttons.get("normal").isClicked())
+			game.setScreen(new LevelsScreen(game, "normal"));
 
-		if (creativeButton.isClick())
-			game.setScreen(new CreativeScreen(game));
+		if (buttons.get("creative").isClicked())
+			game.setScreen(new LevelsScreen(game, "creative"));
 
-		if (backButton.isClick())
+		if (buttons.get("back").isClicked())
 			game.setScreen(new MenuScreen(game));
 	}
 
@@ -89,15 +45,53 @@ public class ModeScreen extends AbstractScreen{
 		super.render(delta);
 
 		spriteBatch.begin();
-
 		topSprite.draw(spriteBatch);
-		backButton.draw(spriteBatch);
 		titleLabel.draw(spriteBatch, 1);
-		normalButton.draw(spriteBatch);
-		creativeButton.draw(spriteBatch);
-		randomButton.draw(spriteBatch);
-
+		buttons.draw(spriteBatch);
 		spriteBatch.end();
 	}
 
+
+	private void createInterface() {
+
+		/* Topbar Sprite */
+		topSprite = assets.getSprite("topbar.png");
+		Vector2 pos = calc(0, 100);
+		topSprite.setPosition(pos.x, pos.y);
+		topSprite.setColor(Appearance.MAIN_COLOR);
+
+		/* Label */
+		Label.LabelStyle labelStyle = new Label.LabelStyle(assets.getFont("default48.fnt"), Appearance.BACKGROUND_COLOR);
+		titleLabel = new Label("select mode", labelStyle);
+		pos = calc(getResolution().x / 2 - titleLabel.getWidth()/2, 50 + titleLabel.getHeight()/2);
+		titleLabel.setPosition(pos.x, pos.y);
+
+		/* Back Button */
+		buttons.add("back");
+		buttons.get("back").setRadius(40);
+		buttons.get("back").setPosition(calc(20 + 40, 10 + 40));
+		buttons.get("back").setSprite(assets.getSprite("back-button.png"));
+		buttons.get("back").getSprite().setColor(Appearance.BACKGROUND_COLOR);
+
+		/* Normal mode Button */
+		buttons.add("normal");
+		buttons.get("normal").setSize(new Vector2(548, 154));
+		buttons.get("normal").setPosition(calc(86, 505));
+		buttons.get("normal").setSprite(assets.getSprite("button-mode-normal.png"));
+		buttons.get("normal").getSprite().setColor(Appearance.MAIN_COLOR);
+
+		/* Creative mode Button */
+		buttons.add("creative");
+		buttons.get("creative").setSize(new Vector2(548, 154));
+		buttons.get("creative").setPosition(calc(86, 717));
+		buttons.get("creative").setSprite(assets.getSprite("button-mode-creative.png"));
+		buttons.get("creative").getSprite().setColor(Appearance.MAIN_COLOR);
+
+		/* Random mode Button */
+		buttons.add("random");
+		buttons.get("random").setSize(new Vector2(548, 154));
+		buttons.get("random").setPosition(calc(86, 931));
+		buttons.get("random").setSprite(assets.getSprite("button-mode-random.png"));
+		buttons.get("random").getSprite().setColor(Appearance.LOCK_COLOR);
+	}
 }
