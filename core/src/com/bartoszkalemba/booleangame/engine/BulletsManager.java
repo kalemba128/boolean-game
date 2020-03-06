@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.bartoszkalemba.booleangame.Appearance;
 import com.bartoszkalemba.booleangame.BooleanGame;
-import com.bartoszkalemba.booleangame.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Bartek on 22.07.2017.
- */
+
 
 public class BulletsManager {
 
@@ -24,7 +22,7 @@ public class BulletsManager {
         Bullet bullet = new Bullet(source, target);
         bullet.sprite = new Sprite(game.getAssets().getTexture("bullet.png"));
         bullet.sprite.setRotation(MathUtils.random(0, 360));
-        bullet.sprite.setColor(Constant.MainColor);
+        bullet.sprite.setColor(Appearance.MAIN_COLOR);
         bullets.add(bullet);
     }
 
@@ -33,15 +31,15 @@ public class BulletsManager {
     }
 
     public void update() {
-        // Aktualizacja pociskow
+        // Updating of bullets
         for(Bullet bullet : bullets) {
             bullet.update(Gdx.graphics.getDeltaTime());
 
             if (bullet.hit()) {
-                // dodaj pocisk do kosza
+                // add bullet to trash
                 bulletsToRemove.add(bullet);
 
-                // rozpoczni animacje trafionego
+                // start animation of target
                 bullet.target.switchState();
             }
         }
@@ -49,7 +47,7 @@ public class BulletsManager {
         for (Bullet bullet : bulletsToRemove)
             bullets.remove(bullet);
 
-        // wyczysc kosz
+        // clean trash
         bulletsToRemove.clear();
     }
 
@@ -67,6 +65,5 @@ public class BulletsManager {
             return true;
         return false;
     }
-
 
 }
