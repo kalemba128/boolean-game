@@ -12,20 +12,20 @@ public class LevelManager extends LevelFile {
         maxID++;
     }
 
-    // Funkcja usuwa dany vertex razem z jego polaczeniami
+    // Removing vertex with connections
     public void removeVertex(Vertex v) {
         for (Vertex V : vertexConnections(v))
             removeConnection(v, V);
         vertices.remove(v);
     }
 
-    // Funkcja dodaje polaczenie pomiedzy 2 vertexami
+    // Adding new connection between vertices
     public void addConnection(Vertex v1, Vertex v2) {
         connections.add(new Connection(v1, v2));
     }
 
 
-    // Funkcja sprawdza czy miedzy wiercholkami wystepuje polaczenie
+    // Checking connection between vertices
     public boolean isConnection(Vertex v1, Vertex v2) {
         for (Connection c : connections) {
             if (c.v1 == v1 && c.v2 == v2)
@@ -38,7 +38,7 @@ public class LevelManager extends LevelFile {
         return false;
     }
 
-    // Funkcja usuwa polaczenie pomiedzy 2 wierzchołkami
+    // Removing connection between vertices
     public void removeConnection(Vertex v1, Vertex v2) {
         List<Connection> toRemove = new ArrayList<Connection>();
 
@@ -52,7 +52,7 @@ public class LevelManager extends LevelFile {
     }
 
 
-    // Funkcja zwraca liste polaczen nalezacy do danego vertexu
+    // List of outgoing connections from the vertex
     public List<Vertex> vertexConnections(Vertex v) {
         List<Vertex> list = new ArrayList<Vertex>();
         for (Connection c : connections) {

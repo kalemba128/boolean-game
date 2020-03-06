@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.bartoszkalemba.booleangame.Appearance;
 import com.bartoszkalemba.booleangame.BooleanGame;
-import com.bartoszkalemba.booleangame.Constant;
 
 public class Vertex {
     public static float SoundCounter = 0;
@@ -33,13 +33,12 @@ public class Vertex {
         this.animation = new Animation(BallRadius);
     }
 
-    /* FUNKCJA ZMIENIA STAN */
+    // Changing state of vertex
     public void switchState() {
         animation.start();
         counter++;
     }
 
-    // Funckja sprawdza czy wierzcholek jest pod mysza
     public boolean isUnderMouse(Vector2 mouse) {
         float a = mouse.x - position.x;
         float b = mouse.y - position.y;
@@ -73,16 +72,16 @@ public class Vertex {
     }
 
 
-    // Funkcja rysuje tyl wiercholka
+    // Drawing background of vertex
     public void drawBack(ShapeRenderer renderer) {
-        renderer.circle(position.x, position.y, Radius, Constant.CircleSegments);
+        renderer.circle(position.x, position.y, Radius, Appearance.CIRCLE_SEGMENTS);
 
     }
 
-    // Funkcja rysuje przod wiercholka
+    // Drawing foreground of vertex
     public void drawFront(ShapeRenderer renderer) {
-        renderer.setColor(Constant.BackgroundColor);
-        renderer.circle(position.x, position.y, Radius - Border, Constant.CircleSegments);
+        renderer.setColor(Appearance.BACKGROUND_COLOR);
+        renderer.circle(position.x, position.y, Radius - Border, Appearance.CIRCLE_SEGMENTS);
 
 
         if (animation.isSwitch()) {
@@ -97,17 +96,17 @@ public class Vertex {
                 animation.start();
         }
 
-        // Border ball draw
+        // Drawing border of ball
         if (state == Vertex.State.Positive) {
-            renderer.setColor(Constant.MainColor);
-            renderer.circle(position.x, position.y, animation.radius, Constant.CircleSegments);
+            renderer.setColor(Appearance.MAIN_COLOR);
+            renderer.circle(position.x, position.y, animation.radius, Appearance.CIRCLE_SEGMENTS);
         }
         else {
-            renderer.setColor(Constant.MainColor);
-            renderer.circle(position.x, position.y, animation.radius + 3, Constant.CircleSegments);
+            renderer.setColor(Appearance.MAIN_COLOR);
+            renderer.circle(position.x, position.y, animation.radius + 3, Appearance.CIRCLE_SEGMENTS);
 
-            renderer.setColor(Constant.BackgroundColor);
-            renderer.circle(position.x, position.y, animation.radius - 6, Constant.CircleSegments);
+            renderer.setColor(Appearance.BACKGROUND_COLOR);
+            renderer.circle(position.x, position.y, animation.radius - 6, Appearance.CIRCLE_SEGMENTS);
 
         }
     }

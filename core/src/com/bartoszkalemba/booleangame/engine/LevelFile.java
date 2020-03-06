@@ -32,15 +32,15 @@ public class LevelFile {
     public void load(String filename) {
         try {
             _load(filename);
-            System.out.println("LevelFile: Załadowano plik: " + filename + "\n");
+            System.out.println("LevelFile: File loaded: " + filename + "\n");
         } catch (Exception exc) {
-            System.out.println("LevelFile: Nie załadowano pliku: " + filename + " " + exc.toString() + "\n" );
+            System.out.println("LevelFile: File is not loaded: " + filename + " " + exc.toString() + "\n" );
         } finally {}
     }
 
     private void _load(String filename) throws FileNotFoundException {
 
-        // usun wszystkie dotychczasowe wierzcholki oraz polaczenia
+        // Remove all verticels and connections
         vertices.clear();
         connections.clear();
 
@@ -96,9 +96,9 @@ public class LevelFile {
     /*public void save(String filename) {
         try {
             _save(filename);
-            System.out.println("LevelFile: Zapisano plik: " + filename + "\n");
+            System.out.println("LevelFile: File saved: " + filename + "\n");
         } catch (Exception exc) {
-            System.out.println("LevelFile: Nie zapisano pliku: " + filename + "\n");
+            System.out.println("LevelFile: File is not saved: " + filename + "\n");
         } finally {
         }
     }

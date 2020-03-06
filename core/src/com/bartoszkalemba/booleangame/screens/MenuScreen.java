@@ -2,136 +2,117 @@ package com.bartoszkalemba.booleangame.screens;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.bartoszkalemba.booleangame.Appearance;
 import com.bartoszkalemba.booleangame.BooleanGame;
-import com.bartoszkalemba.booleangame.Constant;
-import com.bartoszkalemba.booleangame.GUI.Button;
-import com.bartoszkalemba.booleangame.GUI.RectButton;
-import com.bartoszkalemba.booleangame.engine.Vertex;
+import com.bartoszkalemba.booleangame.GUI.Buttons;
+
 
 public class MenuScreen extends AbstractScreen{
 
+	private Buttons buttons;
+	private Sprite logoSprite, barSprite;
+
+
 	public MenuScreen(final BooleanGame game) {
 		super(game);
-	}
 
-    Button playButton, soundButton, optionsButton, infoButton;
-	Sprite logoSprite, barSprite;
+	}
 
 	@Override
 	protected void init() {
-
-
        	// Create interface
+		buttons = new Buttons();
 		createInterface();
-
-		// Play music
-		Button.sound = assets.getSound("button-click.mp3");
-		RectButton.sound = assets.getSound("button-click.mp3");
-		Vertex.sound = assets.getSound("vertex-click.mp3");
-
-
-
 	}
 
 	@Override
 	protected void update(float delta) {
-        playButton.update(mouse());
-		soundButton.update(mouse());
-		optionsButton.update(mouse());
-		infoButton.update(mouse());
-
-		//if (Gdx.input.isKeyJustPressed(Input.Keys.E))
-		//	game.setScreen(new EdiorScreen(game));
-
-        if (playButton.isClick())
-        	game.setScreen(new ModeScreen(game));
-
-		if (soundButton.isClick()) {
-			game.setSound(!game.isSound());
-
-			if (game.isSound()) {
-				soundButton.sprite = assets.getSprite("sound-on-button.png");
-				game.setSound(true);
-
-			}
-				else {
-				soundButton.sprite = assets.getSprite("sound-off-button.png");
-				game.setSound(false);
-				}
-
-			soundButton.sprite.setColor(Constant.BackgroundColor);
-			soundButton.updateSprite();
-		}
-
-		if (optionsButton.isClick()) {
-			game.setScreen(new OptionsScreen(game));
-		}
-
-		if (infoButton.isClick()) {
-			game.setScreen(new InfoScreen(game));
-		}
-
+		updateInterface();
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
 
-
-
 		spriteBatch.begin();
 		logoSprite.draw(spriteBatch);
-		playButton.draw(spriteBatch);
 		barSprite.draw(spriteBatch);
-		soundButton.draw(spriteBatch);
-		optionsButton.draw(spriteBatch);
-		infoButton.draw(spriteBatch);
-
-
+		buttons.draw(spriteBatch);
 		spriteBatch.end();
 	}
 
 
-
-
 	private void createInterface() {
-		createLogo();
-		createPlayButton();
-		createBarButtons();
-	}
+		/* ---- LOGO ---- */
+		logoSprite = assets.getSprite("logo.png");
+		logoSprite.setPosition(-logoSprite.getWidth()/2, 420);
+		logoSprite.setColor(Appearance.MAIN_COLOR);
 
-	private void createBarButtons() {
+		/* ---- BAR ---- */
 		barSprite = assets.getSprite("buttons-bar.png");
 		barSprite.setPosition(-(getResolution().x/2), -583);
-		barSprite.setColor(Constant.MainColor);
+		barSprite.setColor(Appearance.MAIN_COLOR);
 
-		if (game.isSound())
-			soundButton = new Button(75, calc(90 + 75, 1207 - 75), assets.getSprite("sound-on-button.png"));
-		else
-			soundButton = new Button(75, calc(90 + 75, 1207 - 75), assets.getSprite("sound-off-button.png"));
-		soundButton.sprite.setColor(Constant.BackgroundColor);
+		/* ---- BUTTONS ---- */
+		/* Play Button */
+		buttons.add("play");
+		buttons.get("play").setRadius(300);
+		buttons.get("play").setPosition(new Vector2(0, 0));
+		buttons.get("play").setSprite(assets.getSprite("big-play-button.png"));
+		buttons.get("play").getSprite().setColor(Appearance.MAIN_COLOR);
 
+		/* Sound Button */
+		buttons.add("sound");
+		buttons.get("sound").setRadius(75);
+		buttons.get("sound").setPosition(calc(90 + 75, 1207 - 75));
+		if (game.isSound())buttons.get("sound").setSprite(assets.getSprite("sound-on-button.png"));
+		else buttons.get("sound").setSprite(assets.getSprite("sound-off-button.png"));
+		buttons.get("sound").getSprite().setColor(Appearance.BACKGROUND_COLOR);
 
-		optionsButton = new Button(75, calc(285 + 75, 1207 - 75), assets.getSprite("options-button.png"));
-		optionsButton.sprite.setColor(Constant.BackgroundColor);
-		infoButton = new Button(75, calc(480 + 75, 1207 - 75), assets.getSprite("info-button.png"));
-		infoButton.sprite.setColor(Constant.BackgroundColor);
+		/* Options Button */
+		buttons.add("options");
+		buttons.get("options").setRadius(75);
+		buttons.get("options").setPosition(calc(285 + 75, 1207 - 75));
+		buttons.get("options").setSprite(assets.getSprite("options-button.png"));
+		buttons.get("options").getSprite().setColor(Appearance.BACKGROUND_COLOR);
+
+		/* Info Button */
+		buttons.add("info");
+		buttons.get("info").setRadius(75);
+		buttons.get("info").setPosition(calc(480 + 75, 1207 - 75));
+		buttons.get("info").setSprite(assets.getSprite("info-button.png"));
+		buttons.get("info").getSprite().setColor(Appearance.BACKGROUND_COLOR);
 
 	}
 
-	private void createPlayButton() {
-        playButton = new Button(300, new Vector2(0, 0), assets.getSprite("big-play-button.png"));
-		playButton.sprite.setColor(Constant.MainColor);
+	private void updateInterface(){
+		buttons.update();
+
+		if (buttons.get("play").isClicked())
+			game.setScreen(new ModeScreen(game));
+
+		if (buttons.get("sound").isClicked()) {
+			game.setSoundSettings(!game.isSound());
+
+			if (game.isSound()) {
+				buttons.get("sound").setSprite(assets.getSprite("sound-on-button.png"));
+				game.setSoundSettings(true);
+
+			}
+			else {
+				buttons.get("sound").setSprite(assets.getSprite("sound-off-button.png"));
+				game.setSoundSettings(false);
+			}
+
+			buttons.get("sound").getSprite().setColor(Appearance.BACKGROUND_COLOR);
+		}
+
+		if (buttons.get("options").isClicked()) {
+			game.setScreen(new OptionsScreen(game));
+		}
+
+		if (buttons.get("info").isClicked()) {
+			game.setScreen(new InfoScreen(game));
+		}
 	}
-
-
-	private void createLogo() {
-		logoSprite = assets.getSprite("logo.png");
-		int w = (int)logoSprite.getWidth();
-		int h = (int)logoSprite.getHeight();
-		logoSprite.setPosition(-w/2, 420);
-		logoSprite.setColor(Constant.MainColor);
-	}
-
-
 }

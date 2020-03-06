@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bartoszkalemba.booleangame.Appearance;
 import com.bartoszkalemba.booleangame.BooleanGame;
-import com.bartoszkalemba.booleangame.Constant;
+import com.bartoszkalemba.booleangame.GUI.Button;
+import com.bartoszkalemba.booleangame.engine.Vertex;
 
 public class SplashScreen extends AbstractScreen{
 
@@ -41,10 +42,17 @@ public class SplashScreen extends AbstractScreen{
 		assets.loadAudio();
 	}
 
+	private void setSounds(){
+		Vertex.sound = assets.getSound("vertex-click.mp3");
+		Button.setSound(assets.getSound("button-click.mp3"));
+	}
+
 	@Override
 	protected void update(float delta)
 	{
 		if (game.getAssets().manager.update()) {
+			//Set Sounds
+			setSounds();
 			game.setScreen(new MenuScreen(game));
 		}
 

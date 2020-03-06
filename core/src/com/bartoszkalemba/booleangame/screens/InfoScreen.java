@@ -5,22 +5,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.bartoszkalemba.booleangame.Appearance;
 import com.bartoszkalemba.booleangame.BooleanGame;
-import com.bartoszkalemba.booleangame.Constant;
-import com.bartoszkalemba.booleangame.GUI.Button;
+import com.bartoszkalemba.booleangame.GUI.Buttons;
 import com.bartoszkalemba.booleangame.engine.GameManager;
 import com.bartoszkalemba.booleangame.engine.Vertex;
+
 
 
 public class InfoScreen extends AbstractScreen{
 
 
-	Sprite topSprite;
-	Button backButton;
-	Label titleLabel;
+	private GameManager gameManager;
+	private Sprite topSprite, handSprite, instr1Sprite, instr2Sprite;
+	private Buttons buttons;
+	private Label titleLabel;
 
-	GameManager gameManager;
-	Sprite handSprite, instr1Sprite, instr2Sprite;
 	Vector2 handPosition = new Vector2(-72, 0);
 
 
@@ -30,10 +30,62 @@ public class InfoScreen extends AbstractScreen{
 
 	@Override
 	protected void init() {
-
 		createInterface();
-
 		createInstuction();
+	}
+
+	@Override
+	protected void update(float delta) {
+		buttons.update();
+		updateInstructions();
+
+		if (buttons.get("back").isClicked())
+			game.setScreen(new MenuScreen(game));
+	}
+
+	@Override
+	public void  render(float delta) {
+		super.render(delta);
+		gameManager.render();
+
+		spriteBatch.begin();
+
+		/* Interface drawing*/
+		titleLabel.draw(spriteBatch, 1);
+		topSprite.draw(spriteBatch);
+		buttons.draw(spriteBatch);
+
+		handSprite.draw(spriteBatch);
+		instr1Sprite.draw(spriteBatch);
+		instr2Sprite.draw(spriteBatch);
+
+		spriteBatch.end();
+	}
+
+	private void createInterface() {
+		/* Buttons */
+		buttons = new Buttons();
+		buttons.add("back");
+		buttons.get("back").setRadius(40);
+		buttons.get("back").setPosition(calc(20 + 40, 10 + 40));
+		buttons.get("back").setSprite(assets.getSprite("back-button.png"));
+		buttons.get("back").getSprite().setColor(Appearance.BACKGROUND_COLOR);
+
+		/* Top Sprite */
+		topSprite = assets.getSprite("topbar.png");
+		Vector2 pos = calc(0, 100);
+		topSprite.setPosition(pos.x, pos.y);
+		topSprite.setColor(Appearance.MAIN_COLOR);
+
+		/* Hand Sprite */
+		handSprite = assets.getSprite("hand.png");
+		handSprite.setPosition(-72, 0);
+
+		/* Labels */
+		Label.LabelStyle labelStyle = new Label.LabelStyle(assets.getFont("default48.fnt"), Appearance.BACKGROUND_COLOR);
+		titleLabel = new Label("instructions", labelStyle);
+		pos = calc(getResolution().x / 2 - titleLabel.getWidth()/2, 50 + titleLabel.getHeight()/2 );
+		titleLabel.setPosition(pos.x, pos.y);
 	}
 
 	void createInstuction(){
@@ -52,10 +104,6 @@ public class InfoScreen extends AbstractScreen{
 		gameManager.setSpriteBatch(spriteBatch);
 		gameManager.setShapeRenderer(shapeRenderer);
 		gameManager.getBulletsManager().setGame(game);
-
-
-		handSprite = assets.getSprite("hand.png");
-		handSprite.setPosition(-72, 0);
 	}
 
 	boolean handDir = true;
@@ -67,15 +115,15 @@ public class InfoScreen extends AbstractScreen{
 			handPosition.y += 150 * Gdx.graphics.getDeltaTime();
 
 		if (handPosition.y >= 200 && handDir) {
-            gameManager.hitVertex(gameManager.getLevel().getVertices().get(1));
-            handDir = false;
-        }
+			gameManager.hitVertex(gameManager.getLevel().getVertices().get(1));
+			handDir = false;
+		}
 
-        if (handPosition.y >= 100 && !handDir)
-            handPosition.y -= 150 * Gdx.graphics.getDeltaTime();
+		if (handPosition.y >= 100 && !handDir)
+			handPosition.y -= 150 * Gdx.graphics.getDeltaTime();
 
-        if (handPosition.y <= 100 && !handDir)
-            handDir = true;
+		if (handPosition.y <= 100 && !handDir)
+			handDir = true;
 
 		handSprite.setPosition(handPosition.x, handPosition.y);
 
@@ -83,80 +131,16 @@ public class InfoScreen extends AbstractScreen{
 		float alpha = (handPosition.y * 1.2f);
 		if (alpha <= 1) alpha = 1;
 		handColor.a = alpha / 255.f;
-		//handSprite.setColor(handColor);
+		//handSprite.setColors(handColor);
 
 
 		instr1Sprite = assets.getSprite("instr1.png");
 		instr2Sprite = assets.getSprite("instr2.png");
 
-		instr1Sprite.setColor(Constant.MainColor);
+		instr1Sprite.setColor(Appearance.MAIN_COLOR);
 		instr1Sprite.setPosition(-316, -200);
 
 		instr2Sprite.setPosition(-316, -380);
-	}
-
-	private void createInterface() {
-		createTopbar();
-		createTitle();
-
-		backButton = new Button(40, calc(20 + 40, 10 + 40), assets.getSprite("back-button.png"));
-		backButton.sprite.setColor(Constant.BackgroundColor);
-
-
-	}
-
-
-
-
-	private void createTitle() {
-		Label.LabelStyle labelStyle = new Label.LabelStyle(assets.getFont("default48.fnt"), Constant.BackgroundColor);
-		titleLabel = new Label("instructions", labelStyle);
-
-		float w = titleLabel.getWidth();
-		float h = titleLabel.getHeight();
-
-		Vector2 pos = calc(getResolution().x / 2 - w/2, 50 + h/2 );
-		titleLabel.setPosition(pos.x, pos.y);
-	}
-	private void createTopbar() {
-		topSprite = assets.getSprite("topbar.png");
-		Vector2 pos = calc(0, 100);
-		topSprite.setPosition(pos.x, pos.y);
-		topSprite.setColor(Constant.MainColor);
-	}
-
-
-	@Override
-	protected void update(float delta) {
-
-		updateInstructions();
-		backButton.update(mouse());
-
-
-		if (backButton.isClick())
-			game.setScreen(new MenuScreen(game));
-	}
-
-	@Override
-	public void  render(float delta) {
-		super.render(delta);
-
-		gameManager.render();
-
-		spriteBatch.begin();
-
-		topSprite.draw(spriteBatch);
-		backButton.draw(spriteBatch);
-		titleLabel.draw(spriteBatch, 1);
-		handSprite.draw(spriteBatch);
-
-		instr1Sprite.draw(spriteBatch);
-		instr2Sprite.draw(spriteBatch);
-
-		spriteBatch.end();
-
-
-
 	}
 
 }

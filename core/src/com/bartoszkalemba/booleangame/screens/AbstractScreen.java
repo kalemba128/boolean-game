@@ -11,9 +11,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bartoszkalemba.booleangame.Appearance;
 import com.bartoszkalemba.booleangame.Assets;
 import com.bartoszkalemba.booleangame.BooleanGame;
-import com.bartoszkalemba.booleangame.Constant;
+import com.bartoszkalemba.booleangame.GUI.Button;
 
 
 public abstract class AbstractScreen implements Screen{
@@ -58,32 +59,32 @@ public abstract class AbstractScreen implements Screen{
 
 	protected abstract void update(float delta);
 
-	protected Vector2 mouse() {
+	public Vector2 mouse() {
 		Vector3 m = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 		return  new Vector2(m.x, m.y);
 	}
 
 	@Override
 	public void render(float delta) {
+		Button.setMouse(mouse());
 		update(delta);
-		clearScreen(); // czyszczenie ekranu
+		clearScreen();
 		camera.update();
-		spriteBatch.setProjectionMatrix(camera.combined); // ustawianie projekci spriteBatchu
-		shapeRenderer.setProjectionMatrix(camera.combined); // ustawianie projekci shaperenderu
+		spriteBatch.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(camera.combined);
 	}
 
 	private void clearScreen() {
-		Gdx.gl.glClearColor(Constant.BackgroundColor.r,
-				Constant.BackgroundColor.g,
-				Constant.BackgroundColor.b,
-				Constant.BackgroundColor.a);
+		Gdx.gl.glClearColor(Appearance.BACKGROUND_COLOR.r,
+				Appearance.BACKGROUND_COLOR.g,
+				Appearance.BACKGROUND_COLOR.b,
+				Appearance.BACKGROUND_COLOR.a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 
 	@Override
 	public void show() {Gdx.app.log("INFO", "SHOW ABSTRACT");}
 
-	
 	@Override
 	public void resume() {
 		game.setPaused(false);
